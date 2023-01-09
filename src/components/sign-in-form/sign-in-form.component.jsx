@@ -1,7 +1,8 @@
 // import { ErrorResponse } from "@remix-run/router";
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
+import { userContext } from "../../context/user.context";
 import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
@@ -19,7 +20,9 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  console.log(formFields);
+  // console.log(formFields);
+
+  const { setCurrentUser} = useContext(userContext);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -34,11 +37,11 @@ const SignInForm = () => {
     event.preventDefault();
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
+      const {user} = await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
-      console.log(response);
+      setCurrentUser(user);
       resetFormFields();
     } catch (error) {
       switch (error.code) {
@@ -48,7 +51,7 @@ const SignInForm = () => {
         case "auth/user-not-found":
           alert("no user associated with this email");
           break;
-        default: 
+        default:
           console.log(error);
       }
     }
