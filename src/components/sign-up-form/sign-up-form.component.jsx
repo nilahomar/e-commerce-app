@@ -1,5 +1,5 @@
 // import { ErrorResponse } from "@remix-run/router";
-import React, { useState,useContext } from "react";
+import React, { useState} from "react";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import {
@@ -7,7 +7,6 @@ import {
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 
-import { userContext } from "../../context/user.context";
 
 import './sign-up-form.styles.scss';
 
@@ -23,8 +22,6 @@ const SignUpForm = () => {
   const { displayName, email, password, confirmPassword } = formFields;
 
   // console.log(formFields);
-
-  const {setCurrentUser} = useContext(userContext);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -43,8 +40,6 @@ const SignUpForm = () => {
         email,
         password
       );
-
-      setCurrentUser(user);
 
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();

@@ -1,8 +1,7 @@
 // import { ErrorResponse } from "@remix-run/router";
-import React, { useState ,useContext} from "react";
+import React, { useState} from "react";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
-import { userContext } from "../../context/user.context";
 import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
@@ -22,26 +21,22 @@ const SignInForm = () => {
 
   // console.log(formFields);
 
-  const { setCurrentUser} = useContext(userContext);
-
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+     await signInWithGooglePopup();
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const {user} = await signInAuthUserWithEmailAndPassword(
+      await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
-      setCurrentUser(user);
       resetFormFields();
     } catch (error) {
       switch (error.code) {
